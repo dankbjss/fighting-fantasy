@@ -1,0 +1,613 @@
+/* src/styles.css */
+
+/* Base Styles */
+:root {
+    --paper-color: #f8f4e8;
+    --ink-color: #333;
+    --border-color: #d1c7b7;
+    --highlight-color: #8b4513;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+    color: var(--ink-color);
+    background-color: var(--paper-color);
+  }
+  
+  #root {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Paper Texture Effect */
+  .paper-texture {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(var(--paper-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-color) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  /* Header Styles */
+  .adventure-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ink-color);
+  }
+  
+  .adventure-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  .adventure-header p {
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+  
+  /* Node Styles */
+  .adventure-node {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    position: relative;
+  }
+  
+  .node-number {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .node-content {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .node-content p {
+    margin-bottom: 1rem;
+  }
+  
+  /* Choices Styles */
+  .choices-container {
+    margin-top: 1.5rem;
+  }
+  
+  .choices-container h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .choices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .choice-button {
+    background-color: white;
+    border: 1px solid var(--ink-color);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .choice-button:hover {
+    background-color: #f0e6d2;
+  }
+  
+  .choice-button:after {
+    content: "→";
+    position: absolute;
+    right: 1rem;
+    font-weight: bold;
+  }
+  
+  /* Adventure Sheet Styles */
+  .adventure-sheet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: var(--paper-color);
+    padding: 1.5rem;
+    border: 2px solid var(--ink-color);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+  }
+  
+  .close-sheet {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--ink-color);
+  }
+  
+  .adventure-sheet h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ink-color);
+  }
+  
+  .character-info {
+    margin-bottom: 1.5rem;
+  }
+  
+  .character-info h3 {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 0.25rem;
+  }
+  
+  .character-class {
+    font-style: italic;
+    text-align: center;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .character-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .character-stats div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+  }
+  
+  .character-stats span {
+    font-weight: bold;
+  }
+  
+  .stamina-bar {
+    height: 5px;
+    background-color: #e0e0e0;
+    margin-top: 0.25rem;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .stamina-bar div {
+    height: 100%;
+    background-color: #4caf50;
+  }
+  
+  .special-ability {
+    padding: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .special-ability h4 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .inventory {
+    margin-bottom: 1.5rem;
+  }
+  
+  .inventory h3 {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .inventory ul {
+    list-style-type: none;
+  }
+  
+  .inventory li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dotted var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .inventory button {
+    background-color: var(--ink-color);
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .notes textarea {
+    width: 100%;
+    height: 100px;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.7);
+    font-family: inherit;
+    resize: vertical;
+  }
+  
+  /* Combat View Styles */
+  .combat-view {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 2rem;
+  }
+  
+  .combat-view h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #8b0000;
+  }
+  
+  .combatants {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .combatant {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .combatant.player {
+    border-color: #4a6ea9;
+    background-color: rgba(74, 110, 169, 0.1);
+  }
+  
+  .combatant.enemy {
+    border-color: #a94a4a;
+    background-color: rgba(169, 74, 74, 0.1);
+  }
+  
+  .combatant h3 {
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .attack-results {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+  }
+  
+  .attack-roll {
+    margin: 0.5rem 0;
+    font-family: monospace;
+  }
+  
+  .battle-log {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .battle-log ul {
+    list-style-type: none;
+  }
+  
+  .battle-log li {
+    padding: 0.25rem 0;
+    border-bottom: 1px dotted var(--border-color);
+    font-size: 0.9rem;
+  }
+  
+  .combat-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .combat-actions button {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: var(--ink-color);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  
+  .combat-actions button:hover {
+    opacity: 0.9;
+  }
+  
+  /* Dice Roller Styles */
+  .dice-button {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--ink-color);
+    color: white;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  
+  .sheet-toggle {
+    position: fixed;
+    bottom: 5rem;
+    right: 1rem;
+    background-color: var(--ink-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    z-index: 10;
+  }
+  
+  .dice-roller-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  
+  .dice-roller {
+    background-color: var(--paper-color);
+    padding: 1.5rem;
+    border: 2px solid var(--ink-color);
+    border-radius: 3px;
+    max-width: 300px;
+    width: 90%;
+  }
+  
+  .dice-roller h3 {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .dice-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dice-actions button {
+    padding: 0.75rem;
+    background-color: var(--ink-color);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  
+  .dice-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    text-align: center;
+    font-family: monospace;
+  }
+
+  /* Character Creation Styles */
+.creation-step {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+  
+  .dice-roll {
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+  
+  .die {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: white;
+    border: 2px solid var(--ink-color);
+    border-radius: 5px;
+    margin: 0.5rem;
+  }
+  
+  .class-options {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .class-option {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .class-option:hover {
+    background-color: #f0e6d2;
+  }
+  
+  .class-option.selected {
+    border-color: var(--highlight-color);
+    background-color: #f0e6d2;
+    box-shadow: 0 0 0 2px var(--highlight-color);
+  }
+  
+  .class-option h3 {
+    color: var(--highlight-color);
+    margin-bottom: 0.5rem;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 1rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  .special {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+  
+  .character-preview {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  
+  .class-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .class-badge.fighter {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .class-badge.rogue {
+    background-color: #e2e3e5;
+    color: #383d41;
+  }
+  
+  .class-badge.wizard {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
+  
+  .character-sheet {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin: 1.5rem 0;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+  
+  .continue-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--highlight-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .continue-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Loading State */
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 600px) {
+    .combatants {
+      flex-direction: column;
+    }
+    
+    .adventure-sheet {
+      width: 95%;
+      padding: 1rem;
+    }
+    
+    .character-stats {
+      grid-template-columns: 1fr;
+    }
+  }

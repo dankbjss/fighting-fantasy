@@ -1,0 +1,167 @@
+// Main App Component
+import React, { useState, useEffect } from 'react';
+import { AdventureNode } from './AdventureNode';
+import { AdventureSheet } from './AdventureSheet';
+import { BattleSystem } from './BattleSystem';
+import { CharacterCreation } from './CharacterCreation';
+import { DiceRoller } from './DiceRoller';
+import { adventureData } from './adventureData';
+import { GameRules } from './GameRules';
+
+export default function AdventureApp() {
+  const [currentNodeId, setCurrentNodeId] = useState(null);
+  const [gameState, setGameState] = useState({
+    started: false,
+    inBattle: false,
+    showSheet: false,
+    showRules: true,
+    character: null,
+    inventory: [],
+    currentMonster: null,
+    wallTemperament: 0,
+  });
+
+  // Handle node navigation
+  const navigateToNode = (nodeId) => {
+    // Check if the node is a battle node
+    const node = adventureData.nodes.find(n => n.id === nodeId);
+    if (node && node.type === 'battle') {
+      setGameState(prev => ({
+        ...prev,
+        inBattle: true,
+        currentMonster: adventureData.monsters[node.monsterId]
+      }));
+    }
+    setCurrentNodeId(nodeId);
+    window.scrollTo(0, 0);
+  };
+
+  // Handle battle results
+  const handleBattleEnd = (result) => {
+    const node = adventureData.nodes.find(n => n.id === currentNodeId);
+    setGameState(prev => ({ ...prev, inBattle: false }));
+    
+    if (result.playerWon) {
+      navigateToNode(node.successNodeId);
+    } else {
+      navigateToNode(node.failureNodeId);
+    }
+  };
+
+  // Handle character creation
+  const handleCharacterCreation = (character) => {
+    setGameState(prev => ({
+      ...prev, 
+      started: true,
+      character,
+      showRules: false
+    }));
+    navigateToNode('342'); // Start at the first adventure node
+  };
+
+  // Update wall temperament
+  const updateWallTemperament = (change) => {
+    setGameState(prev => ({
+      ...prev,
+      wallTemperament: prev.wallTemperament + change
+    }));
+  };
+
+  // Add item to inventory
+  const addToInventory = (item) => {
+    setGameState(prev => ({
+      ...prev,
+      inventory: [...prev.inventory, item]
+    }));
+  };
+
+  // Toggle adventure sheet visibility
+  const toggleSheet = () => {
+    setGameState(prev => ({ ...prev, showSheet: !prev.showSheet }));
+  };
+
+  // Toggle rules visibility
+  const toggleRules = () => {
+    setGameState(prev => ({ ...prev, showRules: !prev.showRules }));
+  };
+
+  return (
+    <div className="bg-stone-100 min-h-screen text-stone-800 p-4 max-w-2xl mx-auto font-serif">
+      <header className="mb-6 text-center">
+        <h1 className="text-3xl font-bold mb-2">The Five Room Dungeon</h1>
+        <p className="text-sm italic">A Fighting Fantasy Adventure</p>
+      </header>
+
+      {!gameState.started ? (
+        <>
+          {gameState.showRules && <GameRules onClose={toggleRules} />}
+          <CharacterCreation onCharacterCreated={handleCharacterCreation} />
+        </>
+      ) : (
+        <div className="game-container">
+          {/* Floating action buttons */}
+          <div className="fixed bottom-4 right-4 flex flex-col space-y-2">
+            <button 
+              onClick={toggleSheet}
+              className="bg-amber-700 text-white p-3 rounded-full shadow-lg"
+              aria-label="Adventure Sheet"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </button>
+            <button 
+              onClick={toggleRules}
+              className="bg-blue-700 text-white p-3 rounded-full shadow-lg"
+              aria-label="Rules"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+            </button>
+          </div>
+
+          {/* Main game content */}
+          <div className="relative">
+            {gameState.showSheet && (
+              <AdventureSheet 
+                character={gameState.character}
+                inventory={gameState.inventory}
+                wallTemperament={gameState.wallTemperament}
+                onClose={toggleSheet}
+              />
+            )}
+            
+            {gameState.showRules && <GameRules onClose={toggleRules} />}
+            
+            {gameState.inBattle ? (
+              <BattleSystem
+                character={gameState.character}
+                monster={gameState.currentMonster}
+                onBattleEnd={handleBattleEnd}
+              />
+            ) : (
+              currentNodeId && (
+                <AdventureNode
+                  nodeId={currentNodeId}
+                  onNavigate={navigateToNode}
+                  onUpdateWallTemperament={updateWallTemperament}
+                  onAddInventory={addToInventory}
+                  wallTemperament={gameState.wallTemperament}
+                  character={gameState.character}
+                  inventory={gameState.inventory}
+                />
+              )
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
